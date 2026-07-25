@@ -1,9 +1,14 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom'
 
 
 function LoginPage(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
 
     return (
         <div>
@@ -12,6 +17,8 @@ function LoginPage(){
                     e.preventDefault();
                     console.log('Email:', email);
                     console.log('Password:', password);
+                    login();
+                    navigate('/dashboard');
                 }}>
                 <input 
                     type="email" 
