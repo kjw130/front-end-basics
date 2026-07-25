@@ -12,7 +12,9 @@ export const ProtectedRoute = ({children}: ProtectedRouteProps) => {
             <Navigate to = "/login"/>
         )
     }
-    return (
+
+    // 
+    return ( 
         <>{children}</>
     )
 }
