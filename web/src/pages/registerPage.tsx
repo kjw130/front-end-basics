@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage(){
     const [email, setEmail ] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
 
     return (
         <div>
@@ -14,9 +19,10 @@ function RegisterPage(){
                     console.log(`Placeholder error passwords don't match`)
                 } else {
                     console.log(`Placeholder success passwords match`)
+                    login();
+                    navigate('/dashboard');
+
                 }
-                console.log(email)
-                console.log(password)
             }}> 
 
             <input
