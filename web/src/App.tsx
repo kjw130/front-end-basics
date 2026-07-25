@@ -3,11 +3,11 @@ import LoginPage from "./pages/loginPage"
 import RegisterPage from "./pages/registerPage"
 import DashboardPage from "./pages/dashboardPage"
 
-import { AuthProvider } from "./context/AuthContext"
+
 
 function App(){
   return (
-  <AuthProvider>
+  
     <BrowserRouter>
       <Routes>
           
@@ -20,7 +20,7 @@ function App(){
       </Routes>
     
     </BrowserRouter>
-  </AuthProvider>
+
   )
 }
 
