@@ -21,41 +21,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
   const [token, setToken] = useState(storedToken);
 
+  function handleAuthState(token: string, loggedIn: boolean){
+      localStorage.setItem("tokenData", `${token}`);
+      localStorage.setItem("isLoggedIn", `${loggedIn}`);
+      setLoggedIn(loggedIn);
+      setToken(token);
+  }
+
   const login = async (email: string, password: string) => {
-    try {
       const data = await loginUser(email, password);
-
-      localStorage.setItem("tokenData", `${data.token}`);
-      localStorage.setItem("isLoggedIn", "true");
-
-      setLoggedIn(true);
-      setToken(data.token);
-    } catch (error) {
-      console.error("Error in AuthProvider login stage");
-      throw error;
-    }
+      handleAuthState(data.token, true);
   };
 
   const register = async (email: string, password: string) => {
-    try {
       const data = await registerUser(email, password);
-
-      localStorage.setItem("tokenData", `${data.token}`);
-      localStorage.setItem("isLoggedIn", "true");
-
-      setLoggedIn(true);
-      setToken(data.token);
-    } catch (error) {
-      console.error("Error in AuthProvider login stage");
-      throw error;
-    }
+      handleAuthState(data.token, true);
+      
   };
 
   const logout = () => {
-    localStorage.setItem("isLoggedIn", "false");
-    localStorage.setItem("tokenData", "");
-    setLoggedIn(false);
-    setToken("");
+    handleAuthState("", false); 
   };
 
   return (
