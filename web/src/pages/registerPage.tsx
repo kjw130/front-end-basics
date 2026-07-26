@@ -21,7 +21,6 @@ function RegisterPage(){
                     console.log(`Placeholder success passwords match`)
                     login();
                     navigate('/dashboard');
-
                 }
             }}> 
 
