@@ -1,12 +1,13 @@
 import { createContext, useContext, useState } from "react";
-import { loginUser, registerUser } from "../api/authApi";
+import { loginUser, registerUser, getUser } from "../api/authApi";
 
 type AuthContextType = {
   token: string | null;
   loggedIn: boolean | null;
+  user: any | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,8 +19,10 @@ type AuthProviderProps = {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const storedToken = localStorage.getItem("tokenData");
+  const storedUser = localStorage.getItem("userData")
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
   const [token, setToken] = useState(storedToken);
+  const [user, setUser] = useState(storedUser)
 
   function handleAuthState(token: string, loggedIn: boolean){
       localStorage.setItem("tokenData", `${token}`);
@@ -28,23 +31,43 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setToken(token);
   }
 
+
+  const handleUserData = async(token: string, loggedIn: boolean) => {
+    // Sets user data
+     if(loggedIn && token !== ""){
+      const userData = await getUser(token)
+      setUser(userData);
+      localStorage.setItem("userData", `${userData}`)
+     } else {
+      setUser("");
+      localStorage.setItem("storedUser", "");
+     }
+  }
+
+
+
+
   const login = async (email: string, password: string) => {
       const data = await loginUser(email, password);
       handleAuthState(data.token, true);
+      await handleUserData(data.token, true)
   };
 
   const register = async (email: string, password: string) => {
       const data = await registerUser(email, password);
       handleAuthState(data.token, true);
-      
+      await handleUserData(data.token, true);
   };
 
-  const logout = () => {
+  const logout = async () => {
     handleAuthState("", false); 
+    await handleUserData("", false)
   };
+
+
 
   return (
-    <AuthContext.Provider value={{ token, loggedIn, login, logout, register }}>
+    <AuthContext.Provider value={{ token, loggedIn, user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );
