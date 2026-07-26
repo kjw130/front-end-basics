@@ -9,17 +9,25 @@ function LoginPage(){
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    const handleSubmit = async(e: any)=>{
+        e.preventDefault();
+        try {
+            await login(email, password);
+            navigate('/dashboard')
+        } catch (error) {
+            console.error('login failed')
+            throw error
+        }
+       
+
+    }
+
 
     return (
         <div>
             <h1>Login</h1>
-            <form onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log('Email:', email);
-                    console.log('Password:', password);
-                    login();
-                    navigate('/dashboard');
-                }}>
+            <form onSubmit={(e) => {handleSubmit(e)}}>
+
                 <input 
                     type="email" 
                     placeholder="Email" 
