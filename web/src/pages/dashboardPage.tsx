@@ -12,7 +12,7 @@ function DashboardPage() {
   
   if(user) {
     name = user.result.name
-    email = user.result.name
+    email = user.result.email
   } else{
     return (<div></div>)
   }
