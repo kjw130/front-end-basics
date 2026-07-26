@@ -24,15 +24,17 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-export const registerUser = async (email: string, password: string) => {
+export const registerUser = async (email: string, password: string, name: string) => {
   try {
     const response = await fetch(`${BASE_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, name }),
     });
+
+    console.log(response)
 
     if (!response.ok) {
       throw new Error("Login Failed");
@@ -55,9 +57,9 @@ export const getUser = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    
     if (!response.ok) {
-      throw new Error("Login Failed");
+      throw new Error("Getting user failed");
     }
 
     const data = await response.json();

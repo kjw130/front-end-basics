@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("");
   const { login, register } = useAuth();
 
@@ -12,7 +13,7 @@ function RegisterPage() {
 
   const handleSubmit = async () => {
       try {
-        await register(email, password)
+        await register(email, password, name)
         await login(email, password);
         navigate('/dashboard')
       } catch (error) {
@@ -41,6 +42,14 @@ function RegisterPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+
+        <input
+          type="name"
+          placeholder="Enter Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
 
         <input
           type="password"
